@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		943DF058150AAC6D0068049B /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 943DF057150AAC6D0068049B /* main.c */; };
+		943DF058150AAC6D0068049B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 943DF057150AAC6D0068049B /* main.m */; };
 		943DF05A150AAC6D0068049B /* fswatch.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 943DF059150AAC6D0068049B /* fswatch.1 */; };
+		943DF061150AB32B0068049B /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 943DF060150AB32B0068049B /* CoreServices.framework */; };
+		943DF063150AB3AA0068049B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 943DF062150AB3AA0068049B /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,8 +28,10 @@
 
 /* Begin PBXFileReference section */
 		943DF053150AAC6D0068049B /* fswatch */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = fswatch; sourceTree = BUILT_PRODUCTS_DIR; };
-		943DF057150AAC6D0068049B /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		943DF057150AAC6D0068049B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		943DF059150AAC6D0068049B /* fswatch.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = fswatch.1; sourceTree = "<group>"; };
+		943DF060150AB32B0068049B /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
+		943DF062150AB3AA0068049B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +39,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				943DF063150AB3AA0068049B /* Foundation.framework in Frameworks */,
+				943DF061150AB32B0068049B /* CoreServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +50,8 @@
 		943DF048150AAC6D0068049B = {
 			isa = PBXGroup;
 			children = (
+				943DF062150AB3AA0068049B /* Foundation.framework */,
+				943DF060150AB32B0068049B /* CoreServices.framework */,
 				943DF056150AAC6D0068049B /* fswatch */,
 				943DF054150AAC6D0068049B /* Products */,
 			);
@@ -60,7 +68,7 @@
 		943DF056150AAC6D0068049B /* fswatch */ = {
 			isa = PBXGroup;
 			children = (
-				943DF057150AAC6D0068049B /* main.c */,
+				943DF057150AAC6D0068049B /* main.m */,
 				943DF059150AAC6D0068049B /* fswatch.1 */,
 			);
 			path = fswatch;
@@ -116,7 +124,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				943DF058150AAC6D0068049B /* main.c in Sources */,
+				943DF058150AAC6D0068049B /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
