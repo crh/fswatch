@@ -8,33 +8,32 @@ void callback(ConstFSEventStreamRef streamRef, void *clientCallBackInfo, size_t 
 void callback(ConstFSEventStreamRef streamRef, void *clientCallBackInfo, size_t numEvents, void *eventPaths, const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[]) {
   NSTask *task = [NSTask launchedTaskWithLaunchPath: commandToRun
                                           arguments: argumentsToUse];
-  //NSLog(@"WOO! [%@] %@\n", commandToRun, argumentsToUse);
 }
 
 int main (int argc, char** argv) {
-    [NSAutoreleasePool new];
+  [NSAutoreleasePool new];
 
-    if (argc < 2) {
-        printf("usage: %s command path ...", argv[0]);
-        exit(1);
-    }
+  if (argc < 2) {
+    printf("usage: %s command path ...", argv[0]);
+    exit(1);
+  }
 
-    split_out_cmd_args(argc, argv);
+  split_out_cmd_args(argc, argv);
 
-    CFArrayRef pathsToWatch = (CFArrayRef)[NSArray arrayWithObject: dirToWatch];
-    FSEventStreamRef stream = FSEventStreamCreate(NULL, callback, NULL, pathsToWatch, kFSEventStreamEventIdSinceNow, 0, kFSEventStreamCreateFlagFileEvents);
-    FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopCommonModes);
-    if (!FSEventStreamStart(stream)) {
-        fprintf(stderr, "error: failed to run for some reason\n");
-        exit(1);
-    }
+  CFArrayRef pathsToWatch = (CFArrayRef)[NSArray arrayWithObject: dirToWatch];
+  FSEventStreamRef stream = FSEventStreamCreate(NULL, callback, NULL, pathsToWatch, kFSEventStreamEventIdSinceNow, 0, kFSEventStreamCreateFlagFileEvents);
+  FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopCommonModes);
+  if (!FSEventStreamStart(stream)) {
+    fprintf(stderr, "error: failed to run for some reason\n");
+    exit(1);
+  }
 
-    CFRunLoopRun();
+  CFRunLoopRun();
 
-    // we NEVER get here. ever. period.
-    FSEventStreamStop(stream);
-    FSEventStreamInvalidate(stream);
-    FSEventStreamRelease(stream);
+  // we NEVER get here. ever. period.
+  FSEventStreamStop(stream);
+  FSEventStreamInvalidate(stream);
+  FSEventStreamRelease(stream);
 
-    return 0;
+  return 0;
 }
