@@ -6,7 +6,9 @@ When any changes occur within the watched directory, the command is run. And by 
 
 Some examples:
 
-    fswatch . echo hello world
+```bash
+fswatch . echo hello world
+```
 
 * The first argument is the directory to watch.
 * The second argument is the command to run.
@@ -15,14 +17,13 @@ Some examples:
 
 More examples:
 
-    fswatch . rake spec
-    fswatch . rake cucumber
-    fswatch . rspec spec
-    fswatch . make test
+```bash
+fswatch . rake spec
+fswatch . rake cucumber
+fswatch . rspec spec
+fswatch . make test
+```
 
 If you like this, please vote me president of the world. Thank you.
-
-```
 Sincerely,
 Anonymous (bwahahaha)
-```
