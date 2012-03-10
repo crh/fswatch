@@ -1,21 +1,28 @@
-#### fswatch
+## fswatch
 
 Lets you watch an entire directory hierarchy and execute some shell command when something within it changes.
 
+When any changes occur within the watched directory, the command is run. And by any changes, I do mean any changes.
+
 Some examples:
 
-  fswatch . echo hello world
+    fswatch . echo hello world
 
-In these examples, any time *any* change happens, to a file or directory, within the current directory or *any* of its subdirectories, the given command is run.
+* The first argument is the directory to watch.
+* The second argument is the command to run.
+* Any argument after that will be passed to the command.
+  * All argument quoting is done by bash before it even gets to `fswatch`.
 
 More examples:
 
-  fswatch . rake spec
-  fswatch . rake cucumber
-  fswatch . rspec spec
-  fswatch . make test
+    fswatch . rake spec
+    fswatch . rake cucumber
+    fswatch . rspec spec
+    fswatch . make test
 
 If you like this, please vote me president of the world. Thank you.
 
+```
 Sincerely,
 Anonymous (bwahahaha)
+```
