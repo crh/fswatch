@@ -9,7 +9,7 @@ void callback(ConstFSEventStreamRef streamRef, void *clientCallBackInfo, size_t 
     NSLog(@"WOO! [%@]\n", watchfulCommandToRun);
 }
 
-int main (int argc, char * argv[]) {
+int main (int argc, char** argv) {
     argc = 4;
     argv = (char*[]){ "me", "pwd", "/Users/sdegutis/projects/go/src/github.com/sdegutis/mapstruct", "/Users/sdegutis/projects/go/src/github.com/sdegutis/blog" };
 
