@@ -1,7 +1,8 @@
 ## fswatch
 
-When `fswatch some_dir echo hello world` is run, print "hello world" any time anything changes within `some_dir`.
-And when I say anything, I mean anything. Here are some examples, to clarify:
+When you run `fswatch some_dir echo hello world`, the program will watch the directory
+`some_dir` for changes.  Any time something changes, it will print "hello world". And
+when I say anything, I mean anything.  Here are some examples of changes, to clarify:
 
 * Files being saved with new contents
 * Files being saved with the same contents
