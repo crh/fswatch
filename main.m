@@ -30,7 +30,13 @@ int main (int argc, char** argv) {
   commandToRun = fullPathToCommandToRun;
 
   CFArrayRef pathsToWatch = (CFArrayRef)[NSArray arrayWithObject: dirToWatch];
-  FSEventStreamRef stream = FSEventStreamCreate(NULL, callback, NULL, pathsToWatch, kFSEventStreamEventIdSinceNow, 0, kFSEventStreamCreateFlagFileEvents);
+  FSEventStreamRef stream = FSEventStreamCreate(NULL,
+                                                callback,
+                                                NULL,
+                                                pathsToWatch,
+                                                kFSEventStreamEventIdSinceNow,
+                                                0.1,
+                                                kFSEventStreamCreateFlagFileEvents | kFSEventStreamCreateFlagNoDefer);
   FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopCommonModes);
   if (!FSEventStreamStart(stream)) {
     fprintf(stderr, "error: failed to run for some reason\n");

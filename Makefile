@@ -1,4 +1,5 @@
 LDFLAGS = -framework CoreServices -framework Cocoa
+CFLAGS = -std=c99
 
 fswatch: fswatch.o main.o
 	$(CC) $(LDFLAGS) $^ -o $@
