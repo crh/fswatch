@@ -1,8 +1,7 @@
 ## fswatch
 
-Lets you watch an entire directory hierarchy and execute some shell command when something within it changes.
-
-When any changes occur within the watched directory, the command is run. What kind of changes, you ask?
+When `fswatch some_dir echo hello world` is run, print "hello world" any time anything changes within `some_dir`.
+And when I say anything, I mean anything. Here are some examples, to clarify:
 
 * Files being saved with new contents
 * Files being saved with the same contents
