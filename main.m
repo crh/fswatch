@@ -2,18 +2,14 @@
 #import <CoreServices/CoreServices.h>
 #import <Foundation/Foundation.h>
 
-NSString* watchfulCommandToRun;
+#include "fswatch.h"
 
 void callback(ConstFSEventStreamRef streamRef, void *clientCallBackInfo, size_t numEvents, void *eventPaths, const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[]);
 void callback(ConstFSEventStreamRef streamRef, void *clientCallBackInfo, size_t numEvents, void *eventPaths, const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[]) {
-    NSLog(@"WOO! [%@]\n", watchfulCommandToRun);
+    NSLog(@"WOO! [%@] %@\n", commandToRun, argumentsToUse);
 }
 
 int main (int argc, char** argv) {
-    argc = 4;
-    argv = (char*[]){ "me", "pwd", "/Users/sdegutis/projects/go/src/github.com/sdegutis/mapstruct", "/Users/sdegutis/projects/go/src/github.com/sdegutis/blog" };
-
-
     [NSAutoreleasePool new];
 
     if (argc < 2) {
@@ -21,16 +17,9 @@ int main (int argc, char** argv) {
         exit(1);
     }
 
-    watchfulCommandToRun = [[NSString stringWithCString:argv[1] encoding:NSUTF8StringEncoding] retain];
+    split_out_cmd_args(argc, argv);
 
-    CFMutableArrayRef pathsToWatch = CFArrayCreateMutable(NULL, 0, &kCFTypeArrayCallBacks);
-
-    for (int i = 2; i < argc; i++) {
-        CFArrayAppendValue(pathsToWatch, CFStringCreateWithCString(NULL, argv[i], kCFStringEncodingUTF8));
-    }
-
-    CFShow(pathsToWatch);
-
+    CFArrayRef pathsToWatch = (CFArrayRef)[NSArray arrayWithObject: dirToWatch];
     FSEventStreamRef stream = FSEventStreamCreate(NULL, callback, NULL, pathsToWatch, kFSEventStreamEventIdSinceNow, 0, kFSEventStreamCreateFlagFileEvents);
     FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopCommonModes);
     if (!FSEventStreamStart(stream)) {
