@@ -25,7 +25,9 @@ int main(int argc, char** argv) {
   assert([argumentsToUse isEqualTo: expectedArgs]);
 
   assert([full_path_for(@"echo") isEqualTo: @"/bin/echo"]);
-  assert([full_path_for(@"grep") isEqualTo: @"/usr/bin/echo"]);
+  assert([full_path_for(@"grep") isEqualTo: @"/usr/bin/grep"]);
+  assert([full_path_for(@"./testrunner") isEqualTo: [[[NSFileManager defaultManager] currentDirectoryPath] stringByAppendingPathComponent: @"testrunner"]]);
+  assert(full_path_for(@"blaablablabalaba") == nil);
 
   return 0;
 }

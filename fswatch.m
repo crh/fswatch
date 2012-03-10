@@ -19,5 +19,20 @@ void split_out_cmd_args(int argc, char** argv) {
 }
 
 NSString* full_path_for(NSString* file) {
+  if ([file rangeOfString: @"/"].length > 0) {
+    NSString *path = [[[NSFileManager defaultManager] currentDirectoryPath] stringByAppendingPathComponent: file];
+    if ([[NSFileManager defaultManager] isExecutableFileAtPath: path])
+      return [[path stringByStandardizingPath] retain];
+    else
+      return nil;
+  }
+
+  NSString *lookupPaths = [NSString stringWithCString:getenv("PATH") encoding:NSUTF8StringEncoding];
+  NSArray *paths = [lookupPaths componentsSeparatedByString:@":"];
+  for (NSString* path in paths) {
+    path = [path stringByAppendingPathComponent: file];
+    if ([[NSFileManager defaultManager] isExecutableFileAtPath: path])
+      return [path retain];
+  }
   return nil;
 }
