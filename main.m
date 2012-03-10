@@ -6,7 +6,9 @@
 
 void callback(ConstFSEventStreamRef streamRef, void *clientCallBackInfo, size_t numEvents, void *eventPaths, const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[]);
 void callback(ConstFSEventStreamRef streamRef, void *clientCallBackInfo, size_t numEvents, void *eventPaths, const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[]) {
-    NSLog(@"WOO! [%@] %@\n", commandToRun, argumentsToUse);
+  NSTask *task = [NSTask launchedTaskWithLaunchPath: commandToRun
+                                          arguments: argumentsToUse];
+  //NSLog(@"WOO! [%@] %@\n", commandToRun, argumentsToUse);
 }
 
 int main (int argc, char** argv) {
