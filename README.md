@@ -6,7 +6,7 @@ When any changes occur within the watched directory, the command is run. And by 
 
 ### Install
 
-    brew install https://github.com/sdegutis/fswatch/blob/master/fswatch/brew_formula/fswatch.rb
+    brew install https://github.com/sdegutis/fswatch/blob/master/brew_formula/fswatch.rb
 
 ### Usage
 
