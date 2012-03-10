@@ -17,3 +17,7 @@ void split_out_cmd_args(int argc, char** argv) {
   }
   argumentsToUse = [args retain];
 }
+
+NSString* full_path_for(NSString* file) {
+  return nil;
+}

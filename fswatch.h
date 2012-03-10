@@ -5,3 +5,4 @@ extern NSString *commandToRun;
 extern NSArray *argumentsToUse;
 
 void split_out_cmd_args(int argc, char** argv);
+NSString* full_path_for(NSString* file);

@@ -24,5 +24,8 @@ int main(int argc, char** argv) {
     nil];
   assert([argumentsToUse isEqualTo: expectedArgs]);
 
+  assert([full_path_for(@"echo") isEqualTo: @"/bin/echo"]);
+  assert([full_path_for(@"grep") isEqualTo: @"/usr/bin/echo"]);
+
   return 0;
 }
