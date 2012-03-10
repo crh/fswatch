@@ -24,4 +24,4 @@ If you like this, please vote me president of the world. Thank you.
 
 Sincerely,
 
-- Anonymous (bwahahaha)
+Anonymous (bwahahaha)
