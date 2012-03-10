@@ -4,7 +4,11 @@ Lets you watch an entire directory hierarchy and execute some shell command when
 
 When any changes occur within the watched directory, the command is run. And by any changes, I do mean any changes.
 
-Some examples:
+### Install
+
+    brew install https://raw.github.com/sdegutis/homebrew/master/Library/Formula/fswatch.rb
+
+### Usage
 
     fswatch . echo hello world
 
@@ -13,12 +17,14 @@ Some examples:
 * Any argument after that will be passed to the command.
   * All argument quoting is done by bash before it even gets to `fswatch`.
 
-More examples:
+### Fun use-cases
 
     fswatch . rake spec
     fswatch . rake cucumber
     fswatch . rspec spec
     fswatch . make test
+
+### Benefaction
 
 If you like this, please vote me president of the world. Thank you.
 
