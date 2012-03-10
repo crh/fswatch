@@ -2,6 +2,7 @@
 
 NSString *dirToWatch;
 NSString *commandToRun;
+NSString *fullPathToCommandToRun;
 NSArray *argumentsToUse;
 
 void split_out_cmd_args(int argc, char** argv) {
@@ -9,6 +10,8 @@ void split_out_cmd_args(int argc, char** argv) {
 
   dirToWatch = [[NSString stringWithCString: argv[0] encoding: NSUTF8StringEncoding] retain];
   commandToRun = [[NSString stringWithCString: argv[1] encoding: NSUTF8StringEncoding] retain];
+
+  fullPathToCommandToRun = full_path_for(commandToRun);
 
   NSMutableArray *args = [NSMutableArray array];
   for (int i = 2; i < argc; i++) {

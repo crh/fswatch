@@ -6,7 +6,8 @@
 
 void callback(ConstFSEventStreamRef streamRef, void *clientCallBackInfo, size_t numEvents, void *eventPaths, const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[]);
 void callback(ConstFSEventStreamRef streamRef, void *clientCallBackInfo, size_t numEvents, void *eventPaths, const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[]) {
-  NSTask *task = [NSTask launchedTaskWithLaunchPath: commandToRun
+  printf("\e[34;4m%s %s\e[0m\n", [commandToRun UTF8String], [[argumentsToUse componentsJoinedByString: @" "] UTF8String]);
+  NSTask *task = [NSTask launchedTaskWithLaunchPath: fullPathToCommandToRun
                                           arguments: argumentsToUse];
   [task waitUntilExit];
   printf("\n");
@@ -22,12 +23,10 @@ int main (int argc, char** argv) {
 
   split_out_cmd_args(argc, argv);
 
-  NSString *fullPathToCommandToRun = full_path_for(commandToRun);
   if (fullPathToCommandToRun == nil) {
     fprintf(stderr, "error: could not find executable '%s'\n", [commandToRun UTF8String]);
     exit(1);
   }
-  commandToRun = fullPathToCommandToRun;
 
   CFArrayRef pathsToWatch = (CFArrayRef)[NSArray arrayWithObject: dirToWatch];
   FSEventStreamRef stream = FSEventStreamCreate(NULL,

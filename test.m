@@ -8,7 +8,7 @@ int main(int argc, char** argv) {
   split_out_cmd_args(6, (char*[]){
     "this_executable",
       "some/dir",
-      "a_command",
+      "echo",
       "first arg",
       "second",
       "arg",
@@ -16,7 +16,8 @@ int main(int argc, char** argv) {
 
   assert([dirToWatch isEqualTo: @"some/dir"]);
 
-  assert([commandToRun isEqualTo: @"a_command"]);
+  assert([fullPathToCommandToRun isEqualTo: @"/bin/echo"]);
+  assert([commandToRun isEqualTo: @"echo"]);
   NSArray *expectedArgs = [NSArray arrayWithObjects:
     @"first arg",
     @"second",
