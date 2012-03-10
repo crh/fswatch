@@ -2,7 +2,18 @@
 
 Lets you watch an entire directory hierarchy and execute some shell command when something within it changes.
 
-When any changes occur within the watched directory, the command is run. And by any changes, I do mean any changes.
+When any changes occur within the watched directory, the command is run. What kind of changes, you ask?
+
+* Files being saved with new contents
+* Files being saved with the same contents
+* New files being created
+* Files being deleted
+* New directories being created
+* New files being created in new directories
+* Those new files being changed, saved without changes, or deleted
+* Et cetera, et cetera, ad nauseam
+
+Basically, it will execute your command upon any file or directory event that happens within the directory hierarchy.
 
 ### Install
 
@@ -30,4 +41,4 @@ If you like this, please vote me president of the world. Thank you.
 
 Sincerely,
 
-Anonymous (bwahahaha)
+Anonymous
