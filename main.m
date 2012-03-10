@@ -8,13 +8,15 @@ void callback(ConstFSEventStreamRef streamRef, void *clientCallBackInfo, size_t 
 void callback(ConstFSEventStreamRef streamRef, void *clientCallBackInfo, size_t numEvents, void *eventPaths, const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[]) {
   NSTask *task = [NSTask launchedTaskWithLaunchPath: commandToRun
                                           arguments: argumentsToUse];
+  [task waitUntilExit];
+  printf("\n");
 }
 
 int main (int argc, char** argv) {
   [NSAutoreleasePool new];
 
-  if (argc < 2) {
-    printf("usage: %s command path ...", argv[0]);
+  if (argc < 3) {
+    printf("usage: %s dir cmd arg1 arg2 argn...\n", argv[0]);
     exit(1);
   }
 
