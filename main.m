@@ -20,6 +20,13 @@ int main (int argc, char** argv) {
 
   split_out_cmd_args(argc, argv);
 
+  NSString *fullPathToCommandToRun = full_path_for(commandToRun);
+  if (fullPathToCommandToRun == nil) {
+    fprintf(stderr, "error: could not find executable '%s'\n", [commandToRun UTF8String]);
+    exit(1);
+  }
+  commandToRun = fullPathToCommandToRun;
+
   CFArrayRef pathsToWatch = (CFArrayRef)[NSArray arrayWithObject: dirToWatch];
   FSEventStreamRef stream = FSEventStreamCreate(NULL, callback, NULL, pathsToWatch, kFSEventStreamEventIdSinceNow, 0, kFSEventStreamCreateFlagFileEvents);
   FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopCommonModes);
