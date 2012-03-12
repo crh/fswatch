@@ -33,7 +33,7 @@ Basically, it will execute your command upon any file or directory event that ha
     fswatch . rake spec
     fswatch . rake cucumber
     fswatch . rspec spec
-    fswatch . make test
+    fswatch . go test
 
 ### Benefaction
 
