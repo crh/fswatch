@@ -4,19 +4,7 @@
 
 #include "fswatch.h"
 
-void runTask() {
-  static const char* fullCommandString;
-  if (fullCommandString == NULL) {
-    NSArray *args = [[NSArray arrayWithObject: commandToRun] arrayByAddingObjectsFromArray: argumentsToUse];
-    fullCommandString = [[args componentsJoinedByString: @" "] UTF8String];
-  }
-
-  printf("\e[34;4m%s\e[0m\n", fullCommandString);
-  NSTask *task = [NSTask launchedTaskWithLaunchPath: fullPathToCommandToRun
-                                          arguments: argumentsToUse];
-  [task waitUntilExit];
-  printf("\n");
-}
+void (^runTask)();
 
 void callback(ConstFSEventStreamRef streamRef, void *clientCallBackInfo, size_t numEvents, void *eventPaths, const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[]);
 void callback(ConstFSEventStreamRef streamRef, void *clientCallBackInfo, size_t numEvents, void *eventPaths, const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[]) {
@@ -26,20 +14,20 @@ void callback(ConstFSEventStreamRef streamRef, void *clientCallBackInfo, size_t 
 int main (int argc, char** argv) {
   [NSAutoreleasePool new];
 
-  split_out_cmd_args(argc, argv);
+  WatchOptions options = split_out_cmd_args(argc, argv);
 
-  if (notEnoughArgs) {
+  if (options.notEnoughArgs) {
     printf("usage: %s dir [-f] cmd arg1 arg2 argn...\n"
-           "  -f,\trun command immediately as well", argv[0]);
+           "   -f = also run command initially\n", argv[0]);
     exit(1);
   }
 
-  if (fullPathToCommandToRun == nil) {
-    fprintf(stderr, "error: could not find executable '%s'\n", [commandToRun UTF8String]);
+  if (options.fullPathToCommandToRun == nil) {
+    fprintf(stderr, "error: could not find executable '%s'\n", [options.commandToRun UTF8String]);
     exit(1);
   }
 
-  CFArrayRef pathsToWatch = (CFArrayRef)[NSArray arrayWithObject: dirToWatch];
+  CFArrayRef pathsToWatch = (CFArrayRef)[NSArray arrayWithObject: options.dirToWatch];
   FSEventStreamRef stream = FSEventStreamCreate(NULL,
                                                 callback,
                                                 NULL,
@@ -53,7 +41,21 @@ int main (int argc, char** argv) {
     exit(1);
   }
 
-  if (forceFirstRun)
+  runTask = [^{
+    static const char* fullCommandString;
+    if (fullCommandString == NULL) {
+      NSArray *args = [[NSArray arrayWithObject: options.commandToRun] arrayByAddingObjectsFromArray: options.argumentsToUse];
+      fullCommandString = [[args componentsJoinedByString: @" "] UTF8String];
+    }
+
+    printf("\e[34;4m%s\e[0m\n", fullCommandString);
+    NSTask *task = [NSTask launchedTaskWithLaunchPath: options.fullPathToCommandToRun
+                                            arguments: options.argumentsToUse];
+    [task waitUntilExit];
+    printf("\n");
+  } copy];
+
+  if (options.forceFirstRun)
     runTask();
 
   CFRunLoopRun();
