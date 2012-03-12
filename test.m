@@ -3,36 +3,36 @@
 #import <Foundation/Foundation.h>
 
 void testTooFewArgsWithoutForce() {
-  split_out_cmd_args(2, (char*[]){
+  WatchOptions options = split_out_cmd_args(2, (char*[]){
       "this_executable",
       "some/dir",
       });
 
-  assert(notEnoughArgs == YES);
+  assert(options.notEnoughArgs == YES);
 }
 
 void testEnoughArgsWithoutForce() {
-  split_out_cmd_args(3, (char*[]){
+  WatchOptions options = split_out_cmd_args(3, (char*[]){
       "this_executable",
       "some/dir",
       "pwd",
       });
 
-  assert(notEnoughArgs == NO);
+  assert(options.notEnoughArgs == NO);
 }
 
 void testTooFewArgsWithForce() {
-  split_out_cmd_args(3, (char*[]){
+  WatchOptions options = split_out_cmd_args(3, (char*[]){
       "this_executable",
       "-f",
       "some/dir",
       });
 
-  assert(notEnoughArgs == YES);
+  assert(options.notEnoughArgs == YES);
 }
 
 void testAllVarsGoodWithForce() {
-  split_out_cmd_args(7, (char*[]){
+  WatchOptions options = split_out_cmd_args(7, (char*[]){
       "this_executable",
       "-f",
       "some/dir",
@@ -42,23 +42,23 @@ void testAllVarsGoodWithForce() {
       "arg",
       });
 
-  assert(notEnoughArgs == NO);
+  assert(options.notEnoughArgs == NO);
 
-  assert(forceFirstRun == YES);
-  assert([dirToWatch isEqualTo: @"some/dir"]);
+  assert(options.forceFirstRun == YES);
+  assert([options.dirToWatch isEqualTo: @"some/dir"]);
 
-  assert([fullPathToCommandToRun isEqualTo: @"/bin/echo"]);
-  assert([commandToRun isEqualTo: @"echo"]);
+  assert([options.fullPathToCommandToRun isEqualTo: @"/bin/echo"]);
+  assert([options.commandToRun isEqualTo: @"echo"]);
   NSArray *expectedArgs = [NSArray arrayWithObjects:
     @"first arg",
     @"second",
     @"arg",
     nil];
-  assert([argumentsToUse isEqualTo: expectedArgs]);
+  assert([options.argumentsToUse isEqualTo: expectedArgs]);
 }
 
 void testAllVarsGoodWithoutForce() {
-  split_out_cmd_args(6, (char*[]){
+  WatchOptions options = split_out_cmd_args(6, (char*[]){
       "this_executable",
       "some/dir",
       "echo",
@@ -67,19 +67,19 @@ void testAllVarsGoodWithoutForce() {
       "arg",
       });
 
-  assert(notEnoughArgs == NO);
+  assert(options.notEnoughArgs == NO);
 
-  assert(forceFirstRun == NO);
-  assert([dirToWatch isEqualTo: @"some/dir"]);
+  assert(options.forceFirstRun == NO);
+  assert([options.dirToWatch isEqualTo: @"some/dir"]);
 
-  assert([fullPathToCommandToRun isEqualTo: @"/bin/echo"]);
-  assert([commandToRun isEqualTo: @"echo"]);
+  assert([options.fullPathToCommandToRun isEqualTo: @"/bin/echo"]);
+  assert([options.commandToRun isEqualTo: @"echo"]);
   NSArray *expectedArgs = [NSArray arrayWithObjects:
     @"first arg",
     @"second",
     @"arg",
     nil];
-  assert([argumentsToUse isEqualTo: expectedArgs]);
+  assert([options.argumentsToUse isEqualTo: expectedArgs]);
 }
 
 void testFullPathFor() {

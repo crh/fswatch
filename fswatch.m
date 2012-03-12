@@ -1,35 +1,31 @@
 #include "fswatch.h"
 
-BOOL notEnoughArgs;
+WatchOptions split_out_cmd_args(int argc, char** argv) {
+  WatchOptions options;
 
-NSString *dirToWatch;
-NSString *commandToRun;
-NSString *fullPathToCommandToRun;
-NSArray *argumentsToUse;
-BOOL forceFirstRun;
-
-void split_out_cmd_args(int argc, char** argv) {
   argv++, --argc;
 
-  forceFirstRun = (argc >= 1 && strcmp(argv[0], "-f") == 0);
-  if (forceFirstRun)
+  options.forceFirstRun = (argc >= 1 && strcmp(argv[0], "-f") == 0);
+  if (options.forceFirstRun)
     argv++, --argc;
 
-  notEnoughArgs = (argc < 2);
-  if (notEnoughArgs)
-    return;
+  options.notEnoughArgs = (argc < 2);
+  if (options.notEnoughArgs)
+    return options;
 
-  dirToWatch = [[NSString stringWithCString: argv[0] encoding: NSUTF8StringEncoding] retain];
-  commandToRun = [[NSString stringWithCString: argv[1] encoding: NSUTF8StringEncoding] retain];
+  options.dirToWatch = [[NSString stringWithCString: argv[0] encoding: NSUTF8StringEncoding] retain];
+  options.commandToRun = [[NSString stringWithCString: argv[1] encoding: NSUTF8StringEncoding] retain];
 
-  fullPathToCommandToRun = full_path_for(commandToRun);
+  options.fullPathToCommandToRun = full_path_for(options.commandToRun);
 
   NSMutableArray *args = [NSMutableArray array];
   for (int i = 2; i < argc; i++) {
     NSString *arg = [[NSString stringWithCString: argv[i] encoding: NSUTF8StringEncoding] retain];
     [args addObject: arg];
   }
-  argumentsToUse = [args retain];
+  options.argumentsToUse = [args retain];
+
+  return options;
 }
 
 NSString* full_path_for(NSString* file) {
