@@ -4,10 +4,9 @@
 
 #include "fswatch.h"
 
-void (^runTask)();
-
 void callback(ConstFSEventStreamRef streamRef, void *clientCallBackInfo, size_t numEvents, void *eventPaths, const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[]);
 void callback(ConstFSEventStreamRef streamRef, void *clientCallBackInfo, size_t numEvents, void *eventPaths, const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[]) {
+  void (^runTask)() = clientCallBackInfo;
   runTask();
 }
 
@@ -27,10 +26,28 @@ int main (int argc, char** argv) {
     exit(1);
   }
 
+  NSArray *args = [[NSArray arrayWithObject: options.commandToRun] arrayByAddingObjectsFromArray: options.argumentsToUse];
+  const char* fullCommandString = [[args componentsJoinedByString: @" "] UTF8String];
+
+  void (^runTask)() = [^{
+    printf("\e[34;4m%s\e[0m\n", fullCommandString);
+    NSTask *task = [NSTask launchedTaskWithLaunchPath: options.fullPathToCommandToRun
+                                            arguments: options.argumentsToUse];
+    [task waitUntilExit];
+    printf("\n");
+  } copy];
+
+  FSEventStreamContext ctx;
+  ctx.version = 0;
+  ctx.info = runTask;
+  ctx.retain = NULL;
+  ctx.release = NULL;
+  ctx.copyDescription = NULL;
+
   CFArrayRef pathsToWatch = (CFArrayRef)[NSArray arrayWithObject: options.dirToWatch];
   FSEventStreamRef stream = FSEventStreamCreate(NULL,
                                                 callback,
-                                                NULL,
+                                                &ctx,
                                                 pathsToWatch,
                                                 kFSEventStreamEventIdSinceNow,
                                                 0.1,
@@ -40,20 +57,6 @@ int main (int argc, char** argv) {
     fprintf(stderr, "error: failed to run for some reason\n");
     exit(1);
   }
-
-  runTask = [^{
-    static const char* fullCommandString;
-    if (fullCommandString == NULL) {
-      NSArray *args = [[NSArray arrayWithObject: options.commandToRun] arrayByAddingObjectsFromArray: options.argumentsToUse];
-      fullCommandString = [[args componentsJoinedByString: @" "] UTF8String];
-    }
-
-    printf("\e[34;4m%s\e[0m\n", fullCommandString);
-    NSTask *task = [NSTask launchedTaskWithLaunchPath: options.fullPathToCommandToRun
-                                            arguments: options.argumentsToUse];
-    [task waitUntilExit];
-    printf("\n");
-  } copy];
 
   if (options.forceFirstRun)
     runTask();
