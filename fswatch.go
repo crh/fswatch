@@ -8,14 +8,16 @@ import "C"
 
 import "fmt"
 
-//export goCallback
-func goCallback() {
+//export watchDirsCallback
+func watchDirsCallback() {
   fmt.Println("uhh")
 }
 
-func HelloWorld() bool {
+func watchDirs(dirs []string) bool {
   var paths []*C.char
-  paths = append(paths, C.CString("."))
+  for _, dir := range dirs {
+    paths = append(paths, C.CString(dir))
+  }
   ok := C.fswatch_monitor_paths(&paths[0], C.int(len(paths)))
   return ok != 0
 }
