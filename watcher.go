@@ -1,7 +1,7 @@
 package main
 
 /*
-#cgo LDFLAGS: -framework CoreServices -framework Cocoa
+#cgo LDFLAGS: -framework CoreServices
 int fswatch_monitor_paths(char** paths, int paths_n);
 */
 import "C"
