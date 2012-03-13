@@ -10,9 +10,16 @@ import "C"
 import "fmt"
 import "unsafe"
 
-type dirWatcher options
+type dirWatcherInterface interface {
+  watchDirs()
+  callback()
+}
 
-func (dw dirWatcher) watchDirs() bool {
+var runningDirWatcher dirWatcherInterface
+
+type realDirWatcher options
+
+func (dw realDirWatcher) watchDirs() bool {
   var paths []*C.char
   for _, dir := range dw.dirs {
     path := C.CString(dir)
