@@ -1,4 +1,4 @@
-package fswatch
+package main
 
 /*
 #cgo LDFLAGS: -framework CoreServices -framework Cocoa

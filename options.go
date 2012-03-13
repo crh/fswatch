@@ -1,4 +1,4 @@
-package fswatch
+package main
 
 import "flag"
 
@@ -7,35 +7,31 @@ type options struct {
   cmd string
   dirs []string
   args []string
+
+  valid bool
 }
 
-func split(args []string) (dirs []string, cmdArgs []string) {
+func split(args []string) (dirs, cmdArgs []string, success bool) {
   for i, v := range args {
     if v == "-" {
-      dirs = args[:i]
-      cmdArgs = args[i+1:]
-      return
+      return args[:i], args[i+1:], true
     }
   }
-  return
+  return nil, nil, false
 }
 
 func parseOptions(args []string) options {
-  var forceFirst bool
+  var opts options
 
   fs := flag.NewFlagSet("uhh", flag.ExitOnError)
-  fs.BoolVar(&forceFirst, "f", false, "run the command initially")
+  fs.BoolVar(&opts.forceFirst, "f", false, "run the command initially")
   fs.Parse(args)
-
   args = fs.Args()
 
-  dirs, cmdArgs := split(args)
-  cmd, cmdArgs := cmdArgs[0], cmdArgs[1:]
-
-  return options{
-    forceFirst: forceFirst,
-    dirs: dirs,
-    args: cmdArgs,
-    cmd: cmd,
+  opts.dirs, opts.args, opts.valid = split(args)
+  if opts.valid {
+    opts.cmd, opts.args = opts.args[0], opts.args[1:]
   }
+
+  return opts
 }
