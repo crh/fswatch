@@ -17,7 +17,10 @@ type options struct {
 func split(args []string) (dirs, cmdArgs []string, success bool) {
   for i, v := range args {
     if v == "-" {
-      return args[:i], args[i+1:], len(args[i+1:]) > 0
+      dirs = args[:i]
+      cmdArgs = args[i+1:]
+      success = len(cmdArgs) > 0
+      return
     }
   }
   return nil, nil, false
