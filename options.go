@@ -1,7 +1,6 @@
 package main
 
 import "flag"
-import "os"
 import "io"
 import "fmt"
 
@@ -29,7 +28,7 @@ func split(args []string) (dirs, cmdArgs []string, success bool) {
 func parseOptions(progName string, args []string, output io.Writer) options {
   var opts options
 
-  fs := flag.NewFlagSet(os.Args[0], flag.ExitOnError)
+  fs := flag.NewFlagSet(progName, flag.ExitOnError)
   fs.SetOutput(output)
   fs.Usage = func() {
     fmt.Fprintf(output, "Usage: %s <dir> [...] - <cmd> [arg ...] \n", progName)

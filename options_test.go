@@ -6,10 +6,11 @@ import "bytes"
 
 func TestArgsMissingDash(t *testing.T) {
   var output bytes.Buffer
-  opts := parseOptions("fswatch", []string{".", "echo", "hello", "world"}, &output)
+  opts := parseOptions("this_program", []string{".", "echo", "hello", "world"}, &output)
   assert.False(t, opts.valid)
 
   assert.True(t, output.Len() > 0)
+  assert.StringContains(t, output.String(), "this_program")
   assert.StringContains(t, output.String(), "Usage")
   assert.StringContains(t, output.String(), "-f")
   assert.StringContains(t, output.String(), " - ")
@@ -17,10 +18,11 @@ func TestArgsMissingDash(t *testing.T) {
 
 func TestArgsMissingEverything(t *testing.T) {
   var output bytes.Buffer
-  opts := parseOptions("fswatch", []string{}, &output)
+  opts := parseOptions("this_program", []string{}, &output)
   assert.False(t, opts.valid)
 
   assert.True(t, output.Len() > 0)
+  assert.StringContains(t, output.String(), "this_program")
   assert.StringContains(t, output.String(), "Usage")
   assert.StringContains(t, output.String(), "-f")
   assert.StringContains(t, output.String(), " - ")
@@ -28,10 +30,11 @@ func TestArgsMissingEverything(t *testing.T) {
 
 func TestArgsMissingCommand(t *testing.T) {
   var output bytes.Buffer
-  opts := parseOptions("fswatch", []string{".", "-"}, &output)
+  opts := parseOptions("this_program", []string{".", "-"}, &output)
   assert.False(t, opts.valid)
 
   assert.True(t, output.Len() > 0)
+  assert.StringContains(t, output.String(), "this_program")
   assert.StringContains(t, output.String(), "Usage")
   assert.StringContains(t, output.String(), "-f")
   assert.StringContains(t, output.String(), " - ")
@@ -39,7 +42,7 @@ func TestArgsMissingCommand(t *testing.T) {
 
 func TestBasicArgs(t *testing.T) {
   var output bytes.Buffer
-  opts := parseOptions("fswatch", []string{".", "-", "echo", "hello", "world"}, &output)
+  opts := parseOptions("this_program", []string{".", "-", "echo", "hello", "world"}, &output)
   assert.True(t, output.Len() == 0)
   assert.True(t, opts.valid)
 
@@ -51,7 +54,7 @@ func TestBasicArgs(t *testing.T) {
 
 func TestMultipleDirs(t *testing.T) {
   var output bytes.Buffer
-  opts := parseOptions("fswatch", []string{"spec", "features", "-", "rake", "spec", "cucumber"}, &output)
+  opts := parseOptions("this_program", []string{"spec", "features", "-", "rake", "spec", "cucumber"}, &output)
   assert.True(t, output.Len() == 0)
   assert.True(t, opts.valid)
 
@@ -63,7 +66,7 @@ func TestMultipleDirs(t *testing.T) {
 
 func TestSimpleArgs(t *testing.T) {
   var output bytes.Buffer
-  opts := parseOptions("fswatch", []string{"src", "-", "pwd"}, &output)
+  opts := parseOptions("this_program", []string{"src", "-", "pwd"}, &output)
   assert.True(t, output.Len() == 0)
   assert.True(t, opts.valid)
 
@@ -75,7 +78,7 @@ func TestSimpleArgs(t *testing.T) {
 
 func TestSimpleArgsWithForce(t *testing.T) {
   var output bytes.Buffer
-  opts := parseOptions("fswatch", []string{"-f", "src", "-", "pwd"}, &output)
+  opts := parseOptions("this_program", []string{"-f", "src", "-", "pwd"}, &output)
   assert.True(t, output.Len() == 0)
   assert.True(t, opts.valid)
 
