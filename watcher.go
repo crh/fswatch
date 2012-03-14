@@ -4,24 +4,20 @@ package main
 #cgo LDFLAGS: -framework CoreServices
 #include <stdlib.h>
 int fswatch_monitor_paths(char** paths, int paths_n);
+void fswatch_unwatch_dirs();
 */
 import "C"
-
-import "fmt"
 import "unsafe"
 
-type dirWatcherInterface interface {
-  watchDirs()
-  callback()
+var fileSystemChangeObservers []chan bool
+
+func fileSystemNotify(ch chan bool) {
+  fileSystemChangeObservers = append(fileSystemChangeObservers, ch)
 }
 
-var runningDirWatcher dirWatcherInterface
-
-type realDirWatcher options
-
-func (dw realDirWatcher) watchDirs() bool {
+func watchDirs(dirs []string) bool {
   var paths []*C.char
-  for _, dir := range dw.dirs {
+  for _, dir := range dirs {
     path := C.CString(dir)
     defer C.free(unsafe.Pointer(path))
     paths = append(paths, path)
@@ -30,7 +26,13 @@ func (dw realDirWatcher) watchDirs() bool {
   return ok != 0
 }
 
+func unwatchDirs() {
+  C.fswatch_unwatch_dirs()
+}
+
 //export watchDirsCallback
 func watchDirsCallback() {
-  fmt.Println("uhh")
+  for _, ch := range fileSystemChangeObservers {
+    ch <- true
+  }
 }

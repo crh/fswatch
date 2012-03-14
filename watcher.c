@@ -7,6 +7,10 @@ static void callback(ConstFSEventStreamRef streamRef, void *clientCallBackInfo, 
   watchDirsCallback();
 }
 
+void fswatch_unwatch_dirs() {
+  CFRunLoopStop(CFRunLoopGetMain());
+}
+
 int fswatch_monitor_paths(char** paths, int paths_n) {
   CFMutableArrayRef pathsToWatch = CFArrayCreateMutable(NULL, 0, &kCFTypeArrayCallBacks);
 
