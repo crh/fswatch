@@ -6,6 +6,20 @@ import "fmt"
 
 const Version = "3.0"
 
+/*
+dependencies:
+
+argv[0]
+argv[1:]
+stdout
+stderr
+invoke()
+watchDirs()
+unwatchDirs()
+fileSystemNotify()
+signal.Notify()
+*/
+
 func main() {
   options := parseOptions(os.Args[0], os.Args[1:], os.Stderr)
   if !options.valid {
@@ -23,6 +37,10 @@ func main() {
   interrupt := make(chan os.Signal)
 
   go func() {
+    if options.runInitially {
+      decorate(cmd, invoke)
+    }
+
     for {
       select {
       case <-fsChange:
@@ -35,10 +53,6 @@ func main() {
 
   signal.Notify(interrupt, os.Interrupt)
   fileSystemNotify(fsChange)
-
-  if options.runInitially {
-    decorate(cmd, invoke)
-  }
 
   ok := watchDirs(options.dirs)
   if !ok {
