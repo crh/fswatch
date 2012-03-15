@@ -12,7 +12,12 @@ func main() {
     return
   }
 
-  invoker := newInvoker(options.cmd, options.args, os.Stdout, os.Stderr)
+  cmd := command{
+    name: options.cmd,
+    args: options.args,
+    outPipe: os.Stdout,
+    errPipe: os.Stderr,
+  }
 
   fsChange := make(chan bool)
   interrupt := make(chan os.Signal)
@@ -21,7 +26,7 @@ func main() {
     for {
       select {
       case <-fsChange:
-        invoker()
+        decorate(cmd, invoke)
       case <-interrupt:
         unwatchDirs()
       }
@@ -32,7 +37,7 @@ func main() {
   fileSystemNotify(fsChange)
 
   if options.runInitially {
-    invoker()
+    decorate(cmd, invoke)
   }
 
   ok := watchDirs(options.dirs)
