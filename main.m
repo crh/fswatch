@@ -51,7 +51,7 @@ int main (int argc, char** argv) {
                                                 pathsToWatch,
                                                 kFSEventStreamEventIdSinceNow,
                                                 0.1,
-                                                kFSEventStreamCreateFlagFileEvents | kFSEventStreamCreateFlagNoDefer);
+                                                kFSEventStreamCreateFlagNoDefer);
   FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopCommonModes);
   if (!FSEventStreamStart(stream)) {
     fprintf(stderr, "error: failed to run for some reason\n");
