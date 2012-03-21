@@ -39,6 +39,10 @@ Basically, it will execute your command upon any file or directory event that ha
 
 If you like this, please vote me president of the world. Thank you.
 
+Or even better, click here and endorse my mad skillz:
+
+[![endorse](http://api.coderwall.com/sdegutis/endorse.png)](http://coderwall.com/sdegutis)
+
 Sincerely,
 
 Anonymous
