@@ -15,7 +15,6 @@ stdout
 stderr
 invoke()
 watchDirs()
-unwatchDirs()
 fileSystemNotify()
 signal.Notify()
 */
@@ -63,7 +62,6 @@ func main() {
     case <-fsChange:
       exec()
     case <-interrupt:
-      unwatchDirs()
       break MainLoop
     }
   }

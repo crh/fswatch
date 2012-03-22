@@ -4,7 +4,6 @@ package main
 #cgo LDFLAGS: -framework CoreServices
 #include <stdlib.h>
 int fswatch_monitor_paths(char** paths, int paths_n);
-void fswatch_unwatch_dirs();
 void CFRunLoopRun();
 */
 import "C"
@@ -38,10 +37,6 @@ func watchDirs(dirs []string) bool {
   successChan := make(chan bool)
   go startWatchingDirs(dirs, successChan)
   return <-successChan
-}
-
-func unwatchDirs() {
-  C.fswatch_unwatch_dirs()
 }
 
 //export watchDirsCallback
