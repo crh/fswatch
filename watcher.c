@@ -7,8 +7,12 @@ static void callback(ConstFSEventStreamRef streamRef, void *clientCallBackInfo, 
   watchDirsCallback();
 }
 
+static FSEventStreamRef stream;
+
 void fswatch_unwatch_dirs() {
-  CFRunLoopStop(CFRunLoopGetMain());
+  FSEventStreamStop(stream);
+  FSEventStreamInvalidate(stream);
+  FSEventStreamRelease(stream);
 }
 
 int fswatch_monitor_paths(char** paths, int paths_n) {
@@ -18,13 +22,13 @@ int fswatch_monitor_paths(char** paths, int paths_n) {
   for (i = 0; i < paths_n; i++)
     CFArrayAppendValue(pathsToWatch, CFStringCreateWithCString(NULL, paths[i], kCFStringEncodingUTF8));
 
-  FSEventStreamRef stream = FSEventStreamCreate(NULL,
-                                                callback,
-                                                NULL,
-                                                pathsToWatch,
-                                                kFSEventStreamEventIdSinceNow,
-                                                0.1,
-                                                kFSEventStreamCreateFlagNoDefer);
+  stream = FSEventStreamCreate(NULL,
+                               callback,
+                               NULL,
+                               pathsToWatch,
+                               kFSEventStreamEventIdSinceNow,
+                               0.1,
+                               kFSEventStreamCreateFlagNoDefer);
   FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopCommonModes);
 
   if (!FSEventStreamStart(stream)) {
@@ -32,11 +36,6 @@ int fswatch_monitor_paths(char** paths, int paths_n) {
   }
 
   CFRunLoopRun();
-
-  // we NEVER get here. ever. period.
-  FSEventStreamStop(stream);
-  FSEventStreamInvalidate(stream);
-  FSEventStreamRelease(stream);
 
   return 1;
 }
