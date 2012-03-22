@@ -9,9 +9,14 @@ void CFRunLoopRun();
 import "C"
 import "unsafe"
 
-var fileSystemChangeObservers []chan bool
+type PathEvent struct {
+  path string
+  flags uint32
+}
 
-func fileSystemNotify(ch chan bool) {
+var fileSystemChangeObservers []chan []PathEvent
+
+func fileSystemNotify(ch chan []PathEvent) {
   fileSystemChangeObservers = append(fileSystemChangeObservers, ch)
 }
 
@@ -42,6 +47,6 @@ func watchDirs(dirs []string) bool {
 //export watchDirsCallback
 func watchDirsCallback() {
   for _, ch := range fileSystemChangeObservers {
-    ch <- true
+    ch <- []PathEvent{}
   }
 }

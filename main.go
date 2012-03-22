@@ -48,7 +48,7 @@ func main() {
   }
 
   // register for dir events
-  fsChange := make(chan bool)
+  fsChange := make(chan []PathEvent)
   fileSystemNotify(fsChange)
 
   // register for sigint events

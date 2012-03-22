@@ -4,7 +4,7 @@ import "testing"
 import "github.com/sdegutis/assert"
 
 func TestWatcherCallsInvoke(t *testing.T) {
-  observer := make(chan bool)
+  observer := make(chan []PathEvent)
   ch := make(chan int)
 
   go func() {
