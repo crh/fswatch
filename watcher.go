@@ -5,6 +5,7 @@ package main
 #include <stdlib.h>
 int fswatch_monitor_paths(char** paths, int paths_n);
 void fswatch_unwatch_dirs();
+void CFRunLoopRun();
 */
 import "C"
 import "unsafe"
@@ -22,8 +23,21 @@ func watchDirs(dirs []string) bool {
     defer C.free(unsafe.Pointer(path))
     paths = append(paths, path)
   }
-  ok := C.fswatch_monitor_paths(&paths[0], C.int(len(paths)))
-  return ok != 0
+
+  successChan := make(chan bool)
+
+  go func(successChan chan bool) {
+    ok := C.fswatch_monitor_paths(&paths[0], C.int(len(paths))) != 0
+
+    if ok {
+      successChan <- true
+      C.CFRunLoopRun()
+    } else {
+      successChan <- false
+    }
+  }(successChan)
+
+  return <-successChan
 }
 
 func unwatchDirs() {

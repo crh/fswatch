@@ -31,11 +31,5 @@ int fswatch_monitor_paths(char** paths, int paths_n) {
                                kFSEventStreamCreateFlagNoDefer);
   FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopCommonModes);
 
-  if (!FSEventStreamStart(stream)) {
-    return 0;
-  }
-
-  CFRunLoopRun();
-
-  return 1;
+  return FSEventStreamStart(stream);
 }

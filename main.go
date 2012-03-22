@@ -37,33 +37,34 @@ func main() {
   exec := decorate(cmd, invoke)
 
   // start watching dirs
-  go func(){
-    ok := watchDirs(options.dirs)
-    if !ok {
-      fmt.Fprintln(os.Stderr, "error: fsevent has failed us for the last time.")
-    }
-  }()
-
-  fsChange := make(chan bool)
-  interrupt := make(chan os.Signal)
-
-  // register for either dir changes or sigint
-  signal.Notify(interrupt, os.Interrupt)
-  fileSystemNotify(fsChange)
+  ok := watchDirs(options.dirs)
+  if !ok {
+    fmt.Fprintln(os.Stderr, "error: fsevent has failed us for the last time.")
+    return
+  }
 
   // invoke it at first if required
   if options.runInitially {
     exec()
   }
 
-  // watch for either dir changes or sigint
+  // register for dir changes
+  fsChange := make(chan bool)
+  fileSystemNotify(fsChange)
+
+  // register for sigint
+  interrupt := make(chan os.Signal)
+  signal.Notify(interrupt, os.Interrupt)
+
+  // act on either dir changes or sigint
+  MainLoop:
   for {
     select {
     case <-fsChange:
       exec()
     case <-interrupt:
       unwatchDirs()
-      return
+      break MainLoop
     }
   }
 }

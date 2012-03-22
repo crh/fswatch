@@ -3,6 +3,8 @@ package main
 import "fmt"
 import "strings"
 
+// TODO: use github.com/sdegutis/shellcolors
+
 func decorate(cmd command, exec func(command)) func() {
   return func() {
     cmdStrings := append([]string{cmd.name}, cmd.args...)
