@@ -16,7 +16,7 @@ func fileSystemNotify(ch chan bool) {
   fileSystemChangeObservers = append(fileSystemChangeObservers, ch)
 }
 
-func watchDirs(dirs []string) bool {
+func startWatchingDirs(dirs []string, successChan chan bool) {
   var paths []*C.char
   for _, dir := range dirs {
     path := C.CString(dir)
@@ -24,19 +24,19 @@ func watchDirs(dirs []string) bool {
     paths = append(paths, path)
   }
 
+  ok := C.fswatch_monitor_paths(&paths[0], C.int(len(paths))) != 0
+
+  if ok {
+    successChan <- true
+    C.CFRunLoopRun()
+  } else {
+    successChan <- false
+  }
+}
+
+func watchDirs(dirs []string) bool {
   successChan := make(chan bool)
-
-  go func(successChan chan bool) {
-    ok := C.fswatch_monitor_paths(&paths[0], C.int(len(paths))) != 0
-
-    if ok {
-      successChan <- true
-      C.CFRunLoopRun()
-    } else {
-      successChan <- false
-    }
-  }(successChan)
-
+  go startWatchingDirs(dirs, successChan)
   return <-successChan
 }
 
