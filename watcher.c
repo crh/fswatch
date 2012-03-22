@@ -20,7 +20,7 @@ int fswatch_monitor_paths(char** paths, int paths_n) {
                                                 pathsToWatch,
                                                 kFSEventStreamEventIdSinceNow,
                                                 0.1,
-                                                kFSEventStreamCreateFlagNoDefer);
+                                                kFSEventStreamCreateFlagNoDefer | kFSEventStreamCreateFlagFileEvents);
   FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopCommonModes);
 
   return FSEventStreamStart(stream);

@@ -47,15 +47,15 @@ func main() {
     exec()
   }
 
-  // register for dir changes
+  // register for dir events
   fsChange := make(chan bool)
   fileSystemNotify(fsChange)
 
-  // register for sigint
+  // register for sigint events
   interrupt := make(chan os.Signal)
   signal.Notify(interrupt, os.Interrupt)
 
-  // act on either dir changes or sigint
+  // respond to events
   MainLoop:
   for {
     select {
