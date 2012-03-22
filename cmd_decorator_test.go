@@ -21,7 +21,7 @@ func TestDecorateExecutesCommand(t *testing.T) {
     ranCmd = &cmd
   }
 
-  decorate(ex, fakeRun)
+  decorate(ex, fakeRun)()
 
   assert.DeepEquals(t, ex, *ranCmd)
 }
@@ -36,7 +36,7 @@ func TestDecoratePrintsPrettily(t *testing.T) {
     errPipe: &errput,
   }
 
-  decorate(ex, func(cmd command){})
+  decorate(ex, func(cmd command){})()
 
   assert.True(t, strings.HasSuffix(output.String(), "\n\n"))
   assert.StringContains(t, output.String(), "echo hello world")

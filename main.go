@@ -34,6 +34,7 @@ func main() {
     outPipe: os.Stdout,
     errPipe: os.Stderr,
   }
+  exec := decorate(cmd, invoke)
 
   // start watching dirs
   go func(){
@@ -52,14 +53,14 @@ func main() {
 
   // invoke it at first if required
   if options.runInitially {
-    decorate(cmd, invoke)
+    exec()
   }
 
   // watch for either dir changes or sigint
   for {
     select {
     case <-fsChange:
-      decorate(cmd, invoke)
+      exec()
     case <-interrupt:
       unwatchDirs()
       return
