@@ -38,6 +38,11 @@ func TestDecoratePrintsPrettily(t *testing.T) {
 
   decorate(ex, func(cmd command){})()
 
-  assert.True(t, strings.HasSuffix(output.String(), "\n\n"))
-  assert.StringContains(t, output.String(), "echo hello world")
+  fullCommand :=  "echo hello world"
+
+  assert.StringContains(t, output.String(), fullCommand)
+
+  outstr := output.String()
+  indexAferCmd := strings.Index(outstr, fullCommand) + len(fullCommand)
+  assert.True(t, strings.Count(outstr[indexAferCmd:], "\n") == 2)
 }
