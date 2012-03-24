@@ -4,6 +4,8 @@ import "os"
 import "os/signal"
 import "fmt"
 
+import "github.com/sdegutis/mac-fsevents"
+
 const Version = "3.0"
 
 /*
@@ -35,21 +37,17 @@ func main() {
   }
   exec := decorate(cmd, invoke)
 
-  // start watching dirs
-  ok := watchDirs(options.dirs)
-  if !ok {
-    fmt.Fprintln(os.Stderr, "error: fsevent has failed us for the last time.")
-    return
-  }
-
   // invoke it at first if required
   if options.runInitially {
     exec()
   }
 
-  // register for dir events
-  fsChange := make(chan []PathEvent)
-  fileSystemNotify(fsChange)
+  // register for path events
+  fsChange := fsevents.WatchPaths(options.dirs)
+  if fsChange == nil {
+    fmt.Fprintln(os.Stderr, "error: fsevent has failed us for the last time.")
+    return
+  }
 
   // register for sigint events
   interrupt := make(chan os.Signal)
