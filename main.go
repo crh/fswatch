@@ -6,7 +6,7 @@ import "fmt"
 
 import "github.com/sdegutis/mac-fsevents"
 
-const Version = "3.0"
+const Version = "3.1"
 
 /*
 dependencies:

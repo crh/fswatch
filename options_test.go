@@ -38,7 +38,7 @@ func TestArgsRequestingHelp(t *testing.T) {
   assert.True(t, output.Len() > 0)
   assert.StringContains(t, output.String(), "this_program")
   assert.StringContains(t, output.String(), "-f")
-  assert.StringContains(t, output.String(), " - ")
+  assert.StringContains(t, output.String(), " -- ")
 }
 
 func TestArgsBadFlag(t *testing.T) {
@@ -50,7 +50,7 @@ func TestArgsBadFlag(t *testing.T) {
   assert.True(t, output.Len() > 0)
   assert.StringContains(t, output.String(), "this_program")
   assert.StringContains(t, output.String(), "-f")
-  assert.StringContains(t, output.String(), " - ")
+  assert.StringContains(t, output.String(), " -- ")
 }
 
 func TestArgsMissingDash(t *testing.T) {
@@ -62,7 +62,7 @@ func TestArgsMissingDash(t *testing.T) {
   assert.True(t, output.Len() > 0)
   assert.StringContains(t, output.String(), "this_program")
   assert.StringContains(t, output.String(), "-f")
-  assert.StringContains(t, output.String(), " - ")
+  assert.StringContains(t, output.String(), " -- ")
 }
 
 func TestArgsMissingEverything(t *testing.T) {
@@ -74,36 +74,36 @@ func TestArgsMissingEverything(t *testing.T) {
   assert.True(t, output.Len() > 0)
   assert.StringContains(t, output.String(), "this_program")
   assert.StringContains(t, output.String(), "-f")
-  assert.StringContains(t, output.String(), " - ")
+  assert.StringContains(t, output.String(), " -- ")
 }
 
 func TestArgsMissingDirectories(t *testing.T) {
   var output bytes.Buffer
-  opts := parseOptions("this_program", []string{"-", "pwd"}, &output)
+  opts := parseOptions("this_program", []string{"--", "pwd"}, &output)
   assert.False(t, opts.valid)
 
   assert.Equals(t, strings.Count(output.String(), "usage"), 1)
   assert.True(t, output.Len() > 0)
   assert.StringContains(t, output.String(), "this_program")
   assert.StringContains(t, output.String(), "-f")
-  assert.StringContains(t, output.String(), " - ")
+  assert.StringContains(t, output.String(), " -- ")
 }
 
 func TestArgsMissingCommand(t *testing.T) {
   var output bytes.Buffer
-  opts := parseOptions("this_program", []string{".", "-"}, &output)
+  opts := parseOptions("this_program", []string{".", "--"}, &output)
   assert.False(t, opts.valid)
 
   assert.Equals(t, strings.Count(output.String(), "usage"), 1)
   assert.True(t, output.Len() > 0)
   assert.StringContains(t, output.String(), "this_program")
   assert.StringContains(t, output.String(), "-f")
-  assert.StringContains(t, output.String(), " - ")
+  assert.StringContains(t, output.String(), " -- ")
 }
 
 func TestBasicArgs(t *testing.T) {
   var output bytes.Buffer
-  opts := parseOptions("this_program", []string{".", "-", "echo", "hello", "world"}, &output)
+  opts := parseOptions("this_program", []string{".", "--", "echo", "hello", "world"}, &output)
   assert.True(t, output.Len() == 0)
   assert.True(t, opts.valid)
 
@@ -115,7 +115,7 @@ func TestBasicArgs(t *testing.T) {
 
 func TestMultipleDirs(t *testing.T) {
   var output bytes.Buffer
-  opts := parseOptions("this_program", []string{"spec", "features", "-", "rake", "spec", "cucumber"}, &output)
+  opts := parseOptions("this_program", []string{"spec", "features", "--", "rake", "spec", "cucumber"}, &output)
   assert.True(t, output.Len() == 0)
   assert.True(t, opts.valid)
 
@@ -127,7 +127,7 @@ func TestMultipleDirs(t *testing.T) {
 
 func TestSimpleArgs(t *testing.T) {
   var output bytes.Buffer
-  opts := parseOptions("this_program", []string{"src", "-", "pwd"}, &output)
+  opts := parseOptions("this_program", []string{"src", "--", "pwd"}, &output)
   assert.True(t, output.Len() == 0)
   assert.True(t, opts.valid)
 
@@ -139,7 +139,7 @@ func TestSimpleArgs(t *testing.T) {
 
 func TestSimpleArgsWithInitialRun(t *testing.T) {
   var output bytes.Buffer
-  opts := parseOptions("this_program", []string{"-f", "src", "-", "pwd"}, &output)
+  opts := parseOptions("this_program", []string{"-f", "src", "--", "pwd"}, &output)
   assert.True(t, output.Len() == 0)
   assert.True(t, opts.valid)
 
