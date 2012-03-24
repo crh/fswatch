@@ -4,7 +4,7 @@ import "os"
 import "os/signal"
 import "fmt"
 
-import "github.com/sdegutis/mac-fsevents"
+import "github.com/sdegutis/go.fsevents"
 
 const Version = "3.1"
 
