@@ -8,19 +8,6 @@ import "github.com/sdegutis/mac-fsevents"
 
 const Version = "3.1"
 
-/*
-dependencies:
-
-argv[0]
-argv[1:]
-stdout
-stderr
-invoke()
-watchDirs()
-fileSystemNotify()
-signal.Notify()
-*/
-
 func main() {
   // get the options
   options := parseOptions(os.Args[0], os.Args[1:], os.Stderr)
