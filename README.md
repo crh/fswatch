@@ -10,22 +10,22 @@ other words, it sees *all* file-system events recursively.
 
 ### Install
 
-    $ go get github.com/sdegutis/fswatch-go
+    $ go get github.com/sdegutis/fswatch
 
 ### Usage
 
     $ fswatch
-    usage: fswatch-go [options] <path> [...] -- <cmd> [arg ...]
+    usage: fswatch [options] <path> [...] -- <cmd> [arg ...]
       -f = run command initially
       -v = show version
 
-    fswatch . -- echo hello world
+    $ fswatch . -- echo hello world
 
 ### Fun use-cases
 
-    fswatch spec app lib -- rspec spec
+    $ fswatch spec app lib -- rspec spec
 
-    fswatch . -- go test
+    $ fswatch . -- go test
 
 ### Benefaction
 
