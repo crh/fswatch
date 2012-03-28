@@ -39,7 +39,7 @@ func parseOptions(progName string, args []string, output io.Writer) options {
   fs := flag.NewFlagSet(progName, flag.ContinueOnError)
   fs.SetOutput(output)
   fs.Usage = func() {
-    fmt.Fprintf(output, "usage: %s <path> [...] -- <cmd> [arg ...] \n", progName)
+    fmt.Fprintf(output, "usage: %s [options] <path> [...] -- <cmd> [arg ...] \n", progName)
     fmt.Fprintf(output, "  -f = run command initially\n")
     fmt.Fprintf(output, "  -v = show version\n")
   }

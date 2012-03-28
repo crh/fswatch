@@ -15,7 +15,7 @@ other words, it sees *all* file-system events recursively.
 ### Usage
 
     $ fswatch
-    usage: fswatch-go <path> [...] -- <cmd> [arg ...]
+    usage: fswatch-go [options] <path> [...] -- <cmd> [arg ...]
       -f = run command initially
       -v = show version
 
