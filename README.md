@@ -15,7 +15,7 @@ other words, it sees *all* file-system events recursively.
 ### Usage
 
     $ fswatch
-    usage: fswatch [options] <path> [...] -- <cmd> [arg ...]
+    usage: fswatch [options] path [...] -- cmd [arg ...]
       -f = run command initially
       -v = show version
 
@@ -24,7 +24,6 @@ other words, it sees *all* file-system events recursively.
 ### Fun use-cases
 
     $ fswatch spec app lib -- rspec spec
-
     $ fswatch . -- go test
 
 ### Benefaction
