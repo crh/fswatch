@@ -8,6 +8,10 @@ includes file or directory creation or deletion, and includes files and director
 that are created within directories that are created after `fswatch` is started. In
 other words, it sees *all* file-system events recursively.
 
+It does this using the native FSEvents API on Mac OS X. That means it's efficient and
+doesn't stress your system with polling. Also it probably requires at least Lion (10.7).
+But it's not a gem or node module, so it doesn't require anything other than Go.
+
 ### Install
 
     $ go get github.com/sdegutis/fswatch
